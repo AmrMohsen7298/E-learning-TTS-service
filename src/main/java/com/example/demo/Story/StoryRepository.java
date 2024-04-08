@@ -1,4 +1,4 @@
-package com.example.demo.student;
+package com.example.demo.Story;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,10 +8,10 @@ import java.util.Optional;
 
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StoryRepository extends JpaRepository<Story, Long> {
 
-    @Query("SELECT s from Student s where s.email = ?1")
-    Optional<Student> findStudentByByEmail(String email);
+    @Query("SELECT s from Story s where s.name = ?1")
+    Optional<Story> findStoryByName(String name);
     /*return studentRepository.findAll();*/
 
 }
