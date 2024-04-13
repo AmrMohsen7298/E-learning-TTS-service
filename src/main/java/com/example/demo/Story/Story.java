@@ -1,9 +1,14 @@
 package com.example.demo.Story;
 
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.Period;
+import lombok.*;
 
+import javax.persistence.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Entity
 @Table
 public class Story {
@@ -19,19 +24,10 @@ public class Story {
             generator = "story_sequence"
     )
     private Long id;
+    private Long tutorial_Id;
     private String name;
-    private String paragraph;
+    private String paragraph; 
     private String level;
-
-    public Story() {
-    }
-
-    public Story(Long id, String name, String paragraph, String level) {
-        this.id = id;
-        this.name = name;
-        this.paragraph = paragraph;
-        this.level = level;
-    }
 
     public Story(String name, String paragraph, String level) {
         this.name = name;
@@ -39,44 +35,14 @@ public class Story {
         this.level = level;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getParagraph() {
-        return paragraph;
-    }
-
-    public void setParagraph(String paragraph) {
-        this.paragraph = paragraph;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
     @Override
     public String toString() {
         return "Story{" +
                 "id=" + id +
+                ", tutorial_id=" + tutorial_Id +
                 ", name='" + name + '\'' +
                 ", paragraph='" + paragraph + '\'' +
+                ", level='" + level + '\'' +
                 '}';
     }
 }

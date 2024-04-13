@@ -1,8 +1,7 @@
 package com.example.demo.Tutorial;
-import antlr.Grammar;
+import com.example.demo.Grammar.Grammar;
 import com.example.demo.Quiz.Quiz;
 import com.example.demo.Story.Story;
-import javassist.compiler.ast.Keyword;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,8 +28,8 @@ public class Tutorial {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @OneToMany(mappedBy = "tutorial", cascade = CascadeType.ALL)
-    private List<Keyword> keywords;
+//    @OneToMany(mappedBy = "tutorial", cascade = CascadeType.ALL)
+//    private List<Keywords> keywords;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "grammar_id")

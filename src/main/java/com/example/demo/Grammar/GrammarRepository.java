@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface GrammarRepository extends JpaRepository<Grammar, Long> {
     @Query("SELECT g from Grammar g where g.header = ?1")
-    Optional<Question> findQuestionByHeader(String header);
+    Optional<Grammar> findGrammarByHeader(String header);
 }
 
