@@ -1,6 +1,9 @@
 package com.example.demo.Story;
 
+//import com.example.demo.TTS.TTSService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,12 +11,12 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/story")
 public class StoryController {
-    private final StoryService storyService;
-
     @Autowired
-    public StoryController (StoryService storyService){
-        this.storyService = storyService;
-    }
+    private  StoryService storyService;
+//    @Autowired
+//    private  TTSService ttsService;
+
+
 
     @GetMapping
     public List<Story> getStory(){
@@ -21,8 +24,15 @@ public class StoryController {
     }
 
     @PostMapping
-    public void addNewStory(@RequestBody Story story){
-        storyService.addNewStory(story);
+    public ResponseEntity<Story> addNewStory(@RequestBody Story story){
+
+//        boolean audioAdded = ttsService.saveStoryAudio(storyService.addNewStory(story));
+//        if(audioAdded){
+            storyService.addNewStory(story);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+//        }
+//        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+
     }
 
     @DeleteMapping(path = "{storyId}")

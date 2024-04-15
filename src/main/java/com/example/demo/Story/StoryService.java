@@ -24,12 +24,12 @@ public class StoryService {
     }
 
 
-    public void addNewStory(Story story) {
+    public Story addNewStory(Story story) {
         Optional<Story> storyOptional = storyRepository.findStoryByName(story.getName());
         if (storyOptional.isPresent()){
             throw new IllegalStateException("This name is taken.");
         }
-        storyRepository.save(story);
+        return storyRepository.save(story);
     }
 
     public void deleteStory(Long storyId) {
