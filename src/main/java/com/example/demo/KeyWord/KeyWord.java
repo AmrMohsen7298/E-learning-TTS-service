@@ -23,13 +23,7 @@ public class KeyWord {
             strategy = GenerationType.SEQUENCE,
             generator = "KeyWord_sequence"
     )
-    private Long id;
-    @Column(nullable = false)
-    private Long tutorial_Id;
-
-    @Column(nullable = false)
+    private int keyword_id;
+    private int tutorial_Id;
     private String text;
-
-    @Column(nullable = false)
-    private int level;
 }

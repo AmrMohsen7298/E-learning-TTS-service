@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface GrammarRepository extends JpaRepository<Grammar, Long> {
+public interface GrammarRepository extends JpaRepository<Grammar, Integer> {
     @Query("SELECT g from Grammar g where g.header = ?1")
     Optional<Grammar> findGrammarByHeader(String header);
 }

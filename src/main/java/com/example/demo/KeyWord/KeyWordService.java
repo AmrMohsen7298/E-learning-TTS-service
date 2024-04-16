@@ -16,7 +16,7 @@ public class KeyWordService {
         return keywordRepository.findAll();
     }
 
-    public Optional<KeyWord> getKeywordById(Long id) {
+    public Optional<KeyWord> getKeywordById(int id) {
         return keywordRepository.findById(id);
     }
 
@@ -24,15 +24,15 @@ public class KeyWordService {
         return keywordRepository.save(keyword);
     }
 
-    public KeyWord updateKeyword(Long id, KeyWord keyword) {
+    public KeyWord updateKeyword(int id, KeyWord keyword) {
         if (keywordRepository.existsById(id)) {
-            keyword.setId(id);
+            keyword.setKeyword_id(id);
             return keywordRepository.save(keyword);
         }
         return null; // Or throw an exception indicating the keyword with given id doesn't exist
     }
 
-    public void deleteKeyword(Long id) {
+    public void deleteKeyword(int id) {
         keywordRepository.deleteById(id);
     }
 }

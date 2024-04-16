@@ -14,7 +14,7 @@ public class GrammarService {
         return grammarRepository.findAll();
     }
 
-    public Grammar getGrammarById(Long id) {
+    public Grammar getGrammarById(int id) {
         return grammarRepository.findById(id).orElse(null);
     }
 
@@ -22,7 +22,7 @@ public class GrammarService {
         return grammarRepository.save(grammar);
     }
 
-    public void deleteGrammar(Long id) {
+    public void deleteGrammar(int id) {
         grammarRepository.deleteById(id);
     }
 }

@@ -23,7 +23,8 @@ public class Grammar {
             strategy = GenerationType.SEQUENCE,
             generator = "quiz_sequence"
     )
-    private int id;
+    private int grammar_id;
+    private int tutorial_id;
     private String topic;
     private String header;
     private String example;

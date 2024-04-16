@@ -1,8 +1,6 @@
-package com.example.demo.TTS;
+package com.example.demo.Sentence;
 
-import com.google.protobuf.ByteString;
 import lombok.*;
-
 import javax.persistence.*;
 
 @Getter
@@ -12,11 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table
-public class SentencesAudio {
-    public SentencesAudio(int storyId, ByteString audio){
-        this.storyId = storyId;
-        this.audio = audio;
-    }
+public class Sentence {
     @Id
     @SequenceGenerator(
             name = "sentence_sequence",
@@ -28,7 +22,16 @@ public class SentencesAudio {
             strategy = GenerationType.SEQUENCE,
             generator = "sentence_sequence"
     )
-    private int id;
-    private int storyId;
-    private ByteString audio;
+    private int sentence_id;
+    private int story_id;
+    private String text;
+
+    @Override
+    public String toString() {
+        return "Sentence{" +
+                "id=" + sentence_id +
+                ", story_id=" + story_id +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }

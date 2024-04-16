@@ -22,7 +22,7 @@ public class KeyWordController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<KeyWord> getKeywordById(@PathVariable Long id) {
+    public ResponseEntity<KeyWord> getKeywordById(@PathVariable int id) {
         Optional<KeyWord> keyword = keywordService.getKeywordById(id);
         return keyword.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -35,7 +35,7 @@ public class KeyWordController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<KeyWord> updateKeyword(@PathVariable Long id, @RequestBody KeyWord keyword) {
+    public ResponseEntity<KeyWord> updateKeyword(@PathVariable int id, @RequestBody KeyWord keyword) {
         KeyWord updatedKeyword = keywordService.updateKeyword(id, keyword);
         if (updatedKeyword != null) {
             return new ResponseEntity<>(updatedKeyword, HttpStatus.OK);
@@ -45,7 +45,7 @@ public class KeyWordController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteKeyword(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteKeyword(@PathVariable int id) {
         keywordService.deleteKeyword(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

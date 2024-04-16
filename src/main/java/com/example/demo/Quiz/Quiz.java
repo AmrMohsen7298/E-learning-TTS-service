@@ -24,16 +24,8 @@ import javax.persistence.*;
                 strategy = GenerationType.SEQUENCE,
                 generator = "quiz_sequence"
         )
-        private Long id;
+        private int quiz_id;
         private String code;
-        @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-        @JoinColumn(name = "Question_ID")
-        private Question question;
-        private Long tutorial_Id;
-
-        public Quiz(String code, Question question,Long tutorial_Id) {
-            this.code = code;
-            this.question = question;
-            this.tutorial_Id = tutorial_Id;
-        }
+        private int tutorial_Id;
+        
 }

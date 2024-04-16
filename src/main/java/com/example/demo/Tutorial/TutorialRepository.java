@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface TutorialRepository extends JpaRepository<Tutorial, Long>  {
+public interface TutorialRepository extends JpaRepository<Tutorial, Integer>  {
     @Query("SELECT t from Tutorial t where t.title = ?1")
-    Optional<Question> findQuestionByTitle(String title);
+    Optional<Tutorial> findTutorialByTitle(String title);
 }

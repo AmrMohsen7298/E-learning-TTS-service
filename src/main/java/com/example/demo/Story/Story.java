@@ -23,26 +23,18 @@ public class Story {
             strategy = GenerationType.SEQUENCE,
             generator = "story_sequence"
     )
-    private Long id;
-    private Long tutorial_Id;
+    private int story_id;
+    private int tutorial_Id;
     private String name;
-    private String paragraph; 
-    private String level;
-
-    public Story(String name, String paragraph, String level) {
-        this.name = name;
-        this.paragraph = paragraph;
-        this.level = level;
-    }
+    private String paragraph;
 
     @Override
     public String toString() {
         return "Story{" +
-                "id=" + id +
+                "id=" + story_id +
                 ", tutorial_id=" + tutorial_Id +
                 ", name='" + name + '\'' +
                 ", paragraph='" + paragraph + '\'' +
-                ", level='" + level + '\'' +
                 '}';
     }
 }

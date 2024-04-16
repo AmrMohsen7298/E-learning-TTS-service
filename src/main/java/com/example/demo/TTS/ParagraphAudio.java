@@ -16,6 +16,6 @@ import javax.persistence.Table;
 @Table
 public class ParagraphAudio {
     @Id
-    private Long storyId;
+    private int storyId;
     private ByteString audioContent;
 }

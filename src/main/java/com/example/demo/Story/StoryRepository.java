@@ -8,7 +8,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface StoryRepository extends JpaRepository<Story, Long> {
+public interface StoryRepository extends JpaRepository<Story, Integer> {
 
     @Query("SELECT s from Story s where s.name = ?1")
     Optional<Story> findStoryByName(String name);

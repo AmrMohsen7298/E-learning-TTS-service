@@ -32,7 +32,7 @@ public class StoryService {
         return storyRepository.save(story);
     }
 
-    public void deleteStory(Long storyId) {
+    public void deleteStory(int storyId) {
         boolean exists = storyRepository.existsById(storyId);
         if (!exists){
             throw new IllegalStateException("Story with id " + storyId + " does not exist");
@@ -42,18 +42,16 @@ public class StoryService {
     }
 
     @Transactional
-    public void updateStudent(Long storytId, String name, String email) {
-        Story story = storyRepository.findById(storytId).orElseThrow(()-> new IllegalStateException("Story with id" + storytId + " does not exist. "));
+    public void updateStudent(int storyId, String name, String paragraph) {
+        Story story = storyRepository.findById(storyId).orElseThrow(()-> new IllegalStateException("Story with id" + storyId + " does not exist. "));
 
         if (name != null && name.length() > 0 && !Objects.equals(story.getName(), name)){
-            story.setName(name);
-            }
-        if (email !=null && email.length() > 0){
-            Optional<Story> storyOptional  = storyRepository.findStoryByName(email);
+            Optional<Story> storyOptional  = storyRepository.findStoryByName(name);
             if (storyOptional.isPresent()){
-                throw new IllegalStateException("Email Taken.");
+                throw new IllegalStateException("name Taken.");
             }
             story.setName(name);
+            story.setParagraph(paragraph);
         }
     }
 }

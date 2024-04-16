@@ -19,7 +19,7 @@ public class GrammarController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Grammar> getGrammarById(@PathVariable Long id) {
+    public ResponseEntity<Grammar> getGrammarById(@PathVariable int id) {
         Grammar grammar = grammarService.getGrammarById(id);
         if (grammar != null) {
             return new ResponseEntity<>(grammar, HttpStatus.OK);
@@ -35,7 +35,7 @@ public class GrammarController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGrammar(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteGrammar(@PathVariable int id) {
         grammarService.deleteGrammar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

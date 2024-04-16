@@ -33,8 +33,8 @@ public class QuizController {
 
     @PutMapping(path = "{quizId}")
     public void updateStudent(@PathVariable("quizId") Long quizId,
-                              @RequestParam(required = false) String name,
-                              @RequestParam(required = false) Question question){
-        quizService.updateQuiz(quizId, name, question);
+                              @RequestParam(required = false) String code,
+                              @RequestParam(required = false) int questionId){
+        quizService.updateQuiz(quizId, code, questionId);
     }
 }

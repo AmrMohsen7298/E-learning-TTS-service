@@ -1,13 +1,10 @@
 package com.example.demo.Question;
 
-import com.example.demo.Story.Story;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -32,7 +29,7 @@ public class QuestionService {
         questionRepository.save(question);
     }
 
-    public void deleteQuestion(Long questionId) {
+    public void deleteQuestion(int questionId) {
         boolean exists = questionRepository.existsById(questionId);
         if (!exists){
             throw new IllegalStateException("Question with id " + questionId + " does not exist");
@@ -40,32 +37,21 @@ public class QuestionService {
         questionRepository.deleteById(questionId);
 
     }
-    public Question updateQuestion(Long id, Question questionDetails) {
+    public Question updateQuestion(int id,int quiz_id, String text, String choices, String answer) {
         Optional<Question> optionalQuestion = questionRepository.findById(id);
         if (optionalQuestion.isPresent()) {
             Question question = optionalQuestion.get();
-            question.setText(questionDetails.getText());
-            question.setChoices(questionDetails.getChoices());
-            question.setAnswer(questionDetails.getAnswer());
+            question.setQuiz_id(quiz_id);
+            question.setText(text);
+            question.setChoices(choices);
+            question.setAnswer(answer);
             return questionRepository.save(question);
         } else {
             return null;
         }
     }
-
-//    @Transactional
-//    public void updateQuestion(Long questionId, String text, String code) {
-//        Question question = questionRepository.findById(questionId).orElseThrow(()-> new IllegalStateException("Question with id" + questionId + " does not exist. "));
-//
-//        if (text != null && text.length() > 0 && !Objects.equals(question.getText(), text)){
-//            question.setText(text);
-//        }
-//        if (code !=null && code.length() > 0){
-//            Optional<Question> QuestionOptional  = questionRepository.findQuestionByCode(code);
-//            if (QuestionOptional.isPresent()){
-//                throw new IllegalStateException("code Taken.");
-//            }
-//            question.setCode(code);
-//        }
-//    }
+    public Optional<Question> getQuestionById(int id) {
+        return questionRepository.findById(id);
+    }
+    
 }
