@@ -4,7 +4,9 @@ import com.example.demo.Quiz.Quiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,7 +23,15 @@ public class TutorialService {
         return tutorialRepository.findById(id).orElse(null);
     }
 
-    public Tutorial saveTutorial(Tutorial tutorial) {
+    public Tutorial saveTutorial(String title, String description,String level,
+                                 boolean isPaid, MultipartFile file) throws IOException {
+        Tutorial tutorial = new Tutorial();
+        tutorial.setTitle(title);
+        tutorial.setDescription(description);
+        tutorial.setLevel(level);
+        tutorial.setPaid(isPaid);
+        tutorial.setImage(file.getBytes());
+
         return tutorialRepository.save(tutorial);
     }
 

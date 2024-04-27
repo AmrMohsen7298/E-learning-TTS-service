@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ParagraphAudioRepository extends JpaRepository<ParagraphAudio, ByteString> {
-Optional<ParagraphAudio> getByStoryId(Long id);
+Optional<ParagraphAudio> getByStoryId(int id);
 }

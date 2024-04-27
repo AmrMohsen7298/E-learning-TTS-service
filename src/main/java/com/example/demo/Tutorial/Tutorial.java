@@ -27,6 +27,7 @@ public class Tutorial {
     private String description;
     private String level;
     private boolean isPaid;
+    private byte[] image;
     
 }
 
