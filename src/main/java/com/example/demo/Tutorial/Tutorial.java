@@ -22,9 +22,11 @@ public class Tutorial {
             strategy = GenerationType.SEQUENCE,
             generator = "tutorial_sequence"
     )
-    private int tutorial_id;
+    private int id;
     private String title;
+    private String description;
     private String level;
+    private boolean isPaid;
     
 }
 

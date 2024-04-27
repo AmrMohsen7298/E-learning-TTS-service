@@ -13,5 +13,5 @@ public interface StoryRepository extends JpaRepository<Story, Integer> {
     @Query("SELECT s from Story s where s.name = ?1")
     Optional<Story> findStoryByName(String name);
     /*return studentRepository.findAll();*/
-
+    Optional<Story> findByTutorialId(int tutorialId);
 }

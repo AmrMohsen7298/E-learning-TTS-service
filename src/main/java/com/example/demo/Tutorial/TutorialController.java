@@ -19,13 +19,9 @@ public class TutorialController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tutorial> getTutorialById(@PathVariable int id) {
-        Tutorial tutorial = tutorialService.getTutorialById(id);
-        if (tutorial != null) {
-            return new ResponseEntity<>(tutorial, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public Tutorial getTutorialById(@PathVariable int id) {
+        return tutorialService.getTutorialById(id);
+
     }
 
     @PostMapping

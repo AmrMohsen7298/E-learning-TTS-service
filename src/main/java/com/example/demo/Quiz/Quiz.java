@@ -24,8 +24,8 @@ import javax.persistence.*;
                 strategy = GenerationType.SEQUENCE,
                 generator = "quiz_sequence"
         )
-        private int quiz_id;
+        private int id;
         private String code;
-        private int tutorial_Id;
+        private int tutorialId;
         
 }

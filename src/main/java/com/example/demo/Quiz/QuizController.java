@@ -37,4 +37,8 @@ public class QuizController {
                               @RequestParam(required = false) int questionId){
         quizService.updateQuiz(quizId, code, questionId);
     }
+    @GetMapping("/tutorial/{tutorialId}")
+    public Quiz getByTutorialId(@PathVariable int tutorialId){
+        return quizService.getByTutorialId(tutorialId);
+    }
 }

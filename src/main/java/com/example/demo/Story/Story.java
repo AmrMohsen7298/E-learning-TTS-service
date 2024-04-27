@@ -23,16 +23,16 @@ public class Story {
             strategy = GenerationType.SEQUENCE,
             generator = "story_sequence"
     )
-    private int story_id;
-    private int tutorial_Id;
+    private int id;
+    private int tutorialId;
     private String name;
     private String paragraph;
 
     @Override
     public String toString() {
         return "Story{" +
-                "id=" + story_id +
-                ", tutorial_id=" + tutorial_Id +
+                "id=" + id +
+                ", tutorial_id=" + tutorialId +
                 ", name='" + name + '\'' +
                 ", paragraph='" + paragraph + '\'' +
                 '}';

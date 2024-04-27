@@ -10,4 +10,5 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Query("SELECT q from Quiz q where q.code = ?1")
     Optional<Quiz> findQuestionByCode(String code);
     /*return storytRepository.findAll();*/
+    Optional<Quiz> findByTutorialId(int tutorialId);
 }

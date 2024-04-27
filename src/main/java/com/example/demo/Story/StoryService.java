@@ -25,9 +25,9 @@ public class StoryService {
 
 
     public Story addNewStory(Story story) {
-        Optional<Story> storyOptional = storyRepository.findStoryByName(story.getName());
+        Optional<Story> storyOptional = storyRepository.findByTutorialId(story.getTutorialId());
         if (storyOptional.isPresent()){
-            throw new IllegalStateException("This name is taken.");
+            throw new IllegalStateException("There is a story for this lesson.");
         }
         return storyRepository.save(story);
     }
@@ -53,5 +53,11 @@ public class StoryService {
             story.setName(name);
             story.setParagraph(paragraph);
         }
+    }
+
+    public Story getByTutorialId(int tutorialId) {
+        Optional<Story> story = storyRepository.findByTutorialId(tutorialId);
+        return story.orElse(null);
+
     }
 }

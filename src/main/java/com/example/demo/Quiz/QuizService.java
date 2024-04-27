@@ -45,7 +45,12 @@ public class QuizService {
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(()-> new IllegalStateException("quiz with id" + quizId + " does not exist. "));
         if (code != null && code.length() > 0 && !Objects.equals(quiz.getCode(), code))
             quiz.setCode(code);
-        quiz.setTutorial_Id(tutorial_Id);
+        quiz.setTutorialId(tutorial_Id);
         }
+    public Quiz getByTutorialId(int tutorialId){
+        Optional<Quiz> quiz = quizRepository.findByTutorialId(tutorialId);
+        return quiz.orElse(null);
     }
+    }
+
 

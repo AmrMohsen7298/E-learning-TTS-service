@@ -31,4 +31,5 @@ public class SentencesAudio {
     private int id;
     private int storyId;
     private ByteString audio;
+    private String text;
 }
