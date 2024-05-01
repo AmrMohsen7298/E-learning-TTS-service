@@ -24,6 +24,8 @@ public class TTSService {
     ParagraphAudioRepository paragraphAudioRepository;
     @Autowired
     SentenceAudioRepository sentenceAudioRepository;
+    @Autowired
+    WordAudioRepository wordAudioRepository;
 
     @Autowired
     public TTSService() throws IOException {
@@ -57,6 +59,21 @@ public class TTSService {
             if(audioContents != null){
                 sentenceAudioRepository.save(new SentencesAudio(story.getId(), audioContents));
             }else{
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean saveWordsAudio(Story story) {
+        String[] words = story.getParagraph().split("[.,;:\\s?!]+");
+        for (String s : words) {
+            SynthesisInput inputText = SynthesisInput.newBuilder().setText(s).build();
+            SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(inputText, voice, audioConfig);
+            ByteString audioContents = response.getAudioContent();
+            if (audioContents != null) {
+                wordAudioRepository.save(new WordAudio(story.getId(), audioContents));
+            } else {
                 return false;
             }
         }
