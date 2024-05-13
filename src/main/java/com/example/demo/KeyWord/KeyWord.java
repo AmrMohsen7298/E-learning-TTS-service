@@ -24,6 +24,11 @@ public class KeyWord {
             generator = "KeyWord_sequence"
     )
     private int keyword_id;
-    private int tutorial_Id;
+    private int tutorialId;
+    private String type;
+    private String description;
+    private String translation;
+    private boolean keyFlag = false;
+    private byte[] audio;
     private String text;
 }

@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface KeyWordRepository extends JpaRepository<KeyWord, Integer> {
-    @Query("SELECT k from KeyWord k where k.text = ?1")
-    Optional<KeyWord> findKeyWordByText(String text);
+//    @Query("SELECT k from KeyWord k where k.text = ?1 AND k.tutorial_Id = ?2")
+    Optional<KeyWord> getByTextAndTutorialId(String text, int tutorialId);
 }

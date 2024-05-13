@@ -17,5 +17,5 @@ import javax.persistence.Table;
 public class ParagraphAudio {
     @Id
     private int storyId;
-    private ByteString audioContent;
+    private String filePath;
 }

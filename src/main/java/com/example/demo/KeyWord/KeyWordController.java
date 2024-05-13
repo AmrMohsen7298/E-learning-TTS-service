@@ -1,6 +1,7 @@
 package com.example.demo.KeyWord;
 
 
+import com.google.api.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,11 @@ public class KeyWordController {
 
     @PostMapping
     public ResponseEntity<KeyWord> createKeyword(@RequestBody KeyWord keyword) {
+        keyword.setKeyFlag(true);
         KeyWord createdKeyword = keywordService.createKeyword(keyword);
-        return new ResponseEntity<>(createdKeyword, HttpStatus.CREATED);
+        if(createdKeyword != null){
+        return new ResponseEntity<>(createdKeyword, HttpStatus.CREATED);}
+        return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
     }
 
     @PutMapping("/{id}")
@@ -48,5 +52,15 @@ public class KeyWordController {
     public ResponseEntity<Void> deleteKeyword(@PathVariable int id) {
         keywordService.deleteKeyword(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/text")
+    public ResponseEntity<KeyWord> getByKeyWordText(@RequestParam String word, @RequestParam int tutorialId){
+        KeyWord keyword = keywordService.getByKeywordText(word, tutorialId);
+        if(keyword != null){
+            return new ResponseEntity<>(keyword, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
     }
 }

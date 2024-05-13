@@ -1,12 +1,15 @@
 package com.example.demo.Story;
 
+import com.example.demo.KeyWord.KeyWordService;
 import com.example.demo.TTS.TTSService;
+import com.example.demo.Translation.TranslationService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -16,6 +19,10 @@ public class StoryController {
     private  StoryService storyService;
     @Autowired
     private  TTSService ttsService;
+    @Autowired
+    KeyWordService keyWordService;
+    @Autowired
+    TranslationService translationService;
 
 
 
@@ -25,8 +32,7 @@ public class StoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Story> addNewStory(@RequestBody Story story){
-
+    public ResponseEntity<Story> addNewStory(@RequestBody Story story) throws IOException {
         boolean audioAdded = ttsService.saveStoryAudio(story);
         if(audioAdded){
             return new ResponseEntity<>(HttpStatus.ACCEPTED);

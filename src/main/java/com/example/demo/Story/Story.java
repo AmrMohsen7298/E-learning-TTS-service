@@ -27,6 +27,7 @@ public class Story {
     private int tutorialId;
     private String name;
     private String paragraph;
+    private String translation;
 
     @Override
     public String toString() {
