@@ -29,15 +29,13 @@ public class TTSController {
 //    WordAudioRepository wordAudioRepository;
 
     @GetMapping(path="/paragraph/{id}")
-    public ResponseEntity<Resource> getParagraphAudioById(@PathVariable int id) throws FileNotFoundException {
-        Optional<ParagraphAudio> paragraphAudio = paragraphAudioRepository.getByStoryId(id);
-        if(paragraphAudio.isPresent()) {
-            Resource resource = ttsService.loadFileAsResource(paragraphAudio.get().getFilePath());
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/mpeg"))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<byte[]> getParagraphAudioById(@PathVariable int id) throws FileNotFoundException {
+        Optional<ParagraphAudio> ParagraphAudio = paragraphAudioRepository.getByStoryId(id);
+
+        HttpHeaders headers = new HttpHeaders();
+        ResponseEntity<byte[]> response = new ResponseEntity(ParagraphAudio.get().getAudioContent().toByteArray(), HttpStatus.OK);
+
+        return response;
     }
     @GetMapping("/sentences/{storyId}")
     public SentencesAudio[] getSentencesAudioByStoryId(@PathVariable int storyId){

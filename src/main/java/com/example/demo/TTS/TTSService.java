@@ -49,44 +49,21 @@ public class TTSService {
 //    WordAudioRepository wordAudioRepository;
     @Autowired
     TranslationService translationService;
-    private final Path fileStorageLocation;
 
-    @Autowired
-    public TTSService(FileStorageProperties fileStorageProperties) throws IOException {
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()+"\\ttsAttachments")
-                .toAbsolutePath().normalize();
-        try {
-            Files.createDirectories(this.fileStorageLocation);
-
-        } catch (Exception ex) {
-            throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
-        }
+    public TTSService() throws IOException {
     }
 
+
     public boolean saveStoryAudio(Story story) throws IOException {
-        String fileName = String.valueOf(story.getTutorialId() ) + "-" + story.getId() + ".mp3";
-        Path filePath = this.fileStorageLocation.resolve(parentDir + "/"+ String.valueOf(story.getTutorialId()));
-        Path targetLocation = this.fileStorageLocation.resolve(filePath + "/" + fileName);
+//        String fileName = String.valueOf(story.getTutorialId() ) + "-" + story.getId() + ".mp3";
         SynthesisInput inputText = SynthesisInput.newBuilder().setText(story.getParagraph()).build();
         SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(inputText, voice, audioConfig);
         ByteString audioContents = response.getAudioContent();
-        File parentFile = new File(parentDir);
-        if(!parentFile.exists()){
-            parentFile.mkdir();
-        }
-        File targetPath = new File(filePath.toString());
-        if (!targetPath.exists()) {
-            boolean targetpath = targetPath.mkdirs();
-        }
-        File targetFile = new File(targetLocation.toString());
-        OutputStream out = new FileOutputStream(targetFile);
 
         if(audioContents != null){
-            out.write(audioContents.toByteArray());
-
             story.setTranslation(translationService.translateText(story.getParagraph()));
             Story addedStory = storyService.addNewStory(story);
-            paragraphAudioRepository.save(new ParagraphAudio(addedStory.getId(),targetFile.getAbsolutePath()));
+            paragraphAudioRepository.save(new ParagraphAudio(addedStory.getId(),audioContents));
         }else{
             return false;
         }
