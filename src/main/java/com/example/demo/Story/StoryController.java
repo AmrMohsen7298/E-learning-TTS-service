@@ -32,7 +32,7 @@ public class StoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Story> addNewStory(@RequestBody Story story) throws IOException {
+    public ResponseEntity<Story> addNewStory(@RequestBody Story story) throws Exception {
         boolean audioAdded = ttsService.saveStoryAudio(story);
         if(audioAdded){
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
