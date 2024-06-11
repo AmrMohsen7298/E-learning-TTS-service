@@ -5,6 +5,7 @@ import com.example.demo.TTS.TTSService;
 import com.example.demo.Translation.TranslationService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 public class StoryController {
     @Autowired
     private  StoryService storyService;
+    @Lazy
     @Autowired
     private  TTSService ttsService;
     @Autowired
@@ -50,7 +52,7 @@ public class StoryController {
     public void updateStudent(@PathVariable("storyId") int storyId,
                               @RequestParam(required = false) String name,
                               @RequestParam(required = false) String paragraph){
-        storyService.updateStudent(storyId, name, paragraph);
+        storyService.updateStory(storyId, name, paragraph);
     }
 
     @GetMapping("/tutorial/{tutorialId}")

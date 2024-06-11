@@ -1,5 +1,6 @@
 package com.example.demo.Grammar;
 
+import com.example.demo.Story.Story;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,5 +39,9 @@ public class GrammarController {
     public ResponseEntity<Void> deleteGrammar(@PathVariable int id) {
         grammarService.deleteGrammar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/getTutorial/{tutorialId}")
+    public List<Grammar> getByTutorialId(@PathVariable int tutorialId){
+        return grammarService.getByTutorialId(tutorialId);
     }
 }

@@ -22,23 +22,25 @@ public class QuizController {
     }
 
     @PostMapping
-    public void addNewStory(@RequestBody Quiz quiz){
+    public void addNewQuiz(@RequestBody Quiz quiz){
         quizService.addNewQuiz(quiz);
     }
 
     @DeleteMapping(path = "{quizId}")
-    public void deleteStory(@PathVariable("quizId") Long quizId){
+    public void deleteQuiz(@PathVariable("quizId") int quizId){
         quizService.deleteQuiz(quizId);
     }
 
     @PutMapping(path = "{quizId}")
-    public void updateStudent(@PathVariable("quizId") Long quizId,
+    public Quiz updateQuiz(@PathVariable("quizId") int quizId,
                               @RequestParam(required = false) String code,
-                              @RequestParam(required = false) int questionId){
-        quizService.updateQuiz(quizId, code, questionId);
+                              @RequestParam(required = false) int tutorialId,
+                              @RequestParam(required = false) List<Question> questions){
+          return  quizService.updateQuiz( quizId,  code,  tutorialId, questions);
     }
     @GetMapping("/tutorial/{tutorialId}")
     public Quiz getByTutorialId(@PathVariable int tutorialId){
         return quizService.getByTutorialId(tutorialId);
     }
+    
 }

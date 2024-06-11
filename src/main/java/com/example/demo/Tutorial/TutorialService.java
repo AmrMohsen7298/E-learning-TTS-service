@@ -1,6 +1,6 @@
 package com.example.demo.Tutorial;
 
-import com.example.demo.Quiz.Quiz;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
+
 
 @Service
 public class TutorialService {
@@ -16,36 +16,86 @@ public class TutorialService {
     private TutorialRepository tutorialRepository;
 
     public List<Tutorial> getAllTutorials() {
-        return tutorialRepository.findAll();
+        try {
+            return tutorialRepository.findAll();
+        } catch (Exception e) {
+            System.err.println("Exception in getAllTutorials: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     public Tutorial getTutorialById(int id) {
-        return tutorialRepository.findById(id).orElse(null);
+        try {
+            return tutorialRepository.findById(id).orElse(null);
+        } catch (Exception e) {
+            System.err.println("Exception in getTutorialById: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public Tutorial saveTutorial(String title, String description,String level,
-                                 boolean isPaid, MultipartFile file) throws IOException {
-        Tutorial tutorial = new Tutorial();
-        tutorial.setTitle(title);
-        tutorial.setDescription(description);
-        tutorial.setLevel(level);
-        tutorial.setPaid(isPaid);
-        tutorial.setImage(file.getBytes());
-
-        return tutorialRepository.save(tutorial);
+    public Tutorial saveTutorial(String title, String description, String level,
+                                 boolean isPaid, MultipartFile file) {
+        try {
+            Tutorial tutorial = new Tutorial();
+            tutorial.setTitle(title);
+            tutorial.setDescription(description);
+            tutorial.setLevel(level);
+            tutorial.setPaid(isPaid);
+            tutorial.setImage(file.getBytes());
+            return tutorialRepository.save(tutorial);
+        } catch (IOException e) {
+            System.err.println("IOException in saveTutorial: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            System.err.println("Exception in saveTutorial: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void deleteTutorial(int id) {
-        tutorialRepository.deleteById(id);
+        try {
+            tutorialRepository.deleteById(id);
+        } catch (Exception e) {
+            System.err.println("Exception in deleteTutorial: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @Transactional
-    public void updateTutorial(int tutorialId, String title, String level) {
-        Tutorial tutorial = tutorialRepository.findById(tutorialId).orElseThrow(()-> new IllegalStateException("tutorial with id" + tutorialId + " does not exist. "));
-        if (title != null && title.length() > 0 && !Objects.equals(tutorial.getTitle(), title))
-            tutorial.setTitle(title);
-        tutorial.setLevel(level);
-        
+    public Tutorial updateTutorial(int tutorialId, String title, String description, String level,
+                               boolean isPaid, MultipartFile file) {
+        try {
+            Tutorial tutorial = tutorialRepository.findById(tutorialId)
+                    .orElseThrow(() -> new IllegalStateException("Tutorial with id " + tutorialId + " does not exist."));
+                    tutorial.setTitle(title);
+                    tutorial.setDescription(description);
+                    tutorial.setLevel(level);
+                    tutorial.setPaid(isPaid);
+                    tutorial.setImage(file.getBytes());
+                    return tutorialRepository.save(tutorial);
+                } catch (IOException e) {
+                    System.err.println("IOException in saveTutorial: " + e.getMessage());
+                    e.printStackTrace();
+                }
+        return  null;
+    }
+
+    public List<Tutorial> getTutorialsByLevel(String level) {
+        try {
+            return tutorialRepository.findByLevel(level);
+        }
+        catch (Exception e) {
+            System.err.println("Exception in getting Keywords: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public List<Tutorial> getTutorialsByIsLearned(boolean isLearned) {
+        return tutorialRepository.findByIsLearned(isLearned);
     }
 }
-

@@ -24,12 +24,14 @@ public class Question {
             strategy = GenerationType.SEQUENCE,
             generator = "Question_sequence"
     )
-    private int question_ID;
-    private int quiz_id;
+    private int id;
+    private int quizId;
     private String code;
     private String text;
-    @Column(columnDefinition = "TEXT")
-    private String choices; // Store as JSON String
+    @ElementCollection
+    @CollectionTable(name = "question_choices", joinColumns = @JoinColumn(name = "question_id"))
+    @Column(name = "choice", columnDefinition = "TEXT")
+    private List<String> choices;
     private String answer;
     
 }

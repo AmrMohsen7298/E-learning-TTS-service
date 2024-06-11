@@ -1,7 +1,5 @@
 package com.example.demo.Question;
 
-import com.example.demo.Story.Story;
-import com.example.demo.Story.StoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +24,12 @@ public class QuestionController {
     }
 
     @PostMapping
-    public void createNewQuestion(@RequestBody Question question){
-        questionService.addNewQuestion(question);
+    public void createNewQuestion(@RequestParam int quizId,
+                                  @RequestParam String code,
+                                  @RequestParam String text,
+                                  @RequestParam List<String> choices,
+                                  @RequestParam String answer){
+        questionService.addNewQuestion(quizId, code, text, choices, answer);
     }
 
     @DeleteMapping(path = "{questionId}")
@@ -37,11 +39,12 @@ public class QuestionController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Question> updateQuestion(@PathVariable int id,
-                                                   @RequestParam int tutorial_id,
+                                                   @RequestParam int quizId,
+                                                   @RequestParam String code,
                                                    @RequestParam String text,
-                                                   @RequestParam String choices,
+                                                   @RequestParam List<String> choices,
                                                    @RequestParam String answer) {
-        Question updatedQuestion = questionService.updateQuestion(id, tutorial_id, text, choices, answer);
+        Question updatedQuestion = questionService.updateQuestion(id, quizId, code, text, choices, answer);
         if (updatedQuestion != null) {
             return ResponseEntity.ok(updatedQuestion);
         } else {
@@ -54,5 +57,15 @@ public class QuestionController {
         return questionOptional
                 .map(question -> ResponseEntity.ok(question))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/getByQuiz/{quizId}")
+    public ResponseEntity<List<Question>> getByQuizId(@PathVariable int quizId) {
+        List<Question> questions = questionService.getByQuizId(quizId);
+        if (questions.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(questions, HttpStatus.OK);
+        }
     }
 }

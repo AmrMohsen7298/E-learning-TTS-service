@@ -24,7 +24,7 @@ public class Grammar {
             generator = "quiz_sequence"
     )
     private int grammar_id;
-    private int tutorial_id;
+    private int tutorialId;
     private String topic;
     private String header;
     private String example;

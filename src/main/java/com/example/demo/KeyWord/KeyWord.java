@@ -31,4 +31,5 @@ public class KeyWord {
     private boolean keyFlag = false;
     private byte[] audio;
     private String text;
+    private String level;
 }

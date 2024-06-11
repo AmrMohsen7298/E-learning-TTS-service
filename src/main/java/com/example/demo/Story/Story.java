@@ -25,8 +25,11 @@ public class Story {
     )
     private int id;
     private int tutorialId;
+ 
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String paragraph;
+    @Column(columnDefinition = "TEXT")
     private String translation;
 
     @Override

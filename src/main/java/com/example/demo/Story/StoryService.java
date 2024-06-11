@@ -11,7 +11,6 @@ import java.util.Optional;
 @Service
 public class StoryService {
 
-
     private final StoryRepository storyRepository;
 
     @Autowired
@@ -19,45 +18,73 @@ public class StoryService {
         this.storyRepository = storyRepository;
     }
 
-    public List<Story> getStory(){
-        return storyRepository.findAll();
+    public List<Story> getStory() {
+        try {
+            return storyRepository.findAll();
+        } catch (Exception e) {
+            System.err.println("Exception in getStory: " + e.getMessage());
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
-
     public Story addNewStory(Story story) {
-        Optional<Story> storyOptional = storyRepository.findByTutorialId(story.getTutorialId());
-        if (storyOptional.isPresent()){
-            throw new IllegalStateException("There is a story for this lesson.");
+        try {
+            Optional<Story> storyOptional = storyRepository.findByTutorialId(story.getTutorialId());
+            if (storyOptional.isPresent()) {
+                throw new IllegalStateException("There is a story for this lesson.");
+            }
+            return storyRepository.save(story);
+        } catch (Exception e) {
+            System.err.println("Exception in addNewStory: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
-        return storyRepository.save(story);
     }
 
     public void deleteStory(int storyId) {
-        boolean exists = storyRepository.existsById(storyId);
-        if (!exists){
-            throw new IllegalStateException("Story with id " + storyId + " does not exist");
+        try {
+            boolean exists = storyRepository.existsById(storyId);
+            if (!exists) {
+                throw new IllegalStateException("Story with id " + storyId + " does not exist");
+            }
+            storyRepository.deleteById(storyId);
+        } catch (Exception e) {
+            System.err.println("Exception in deleteStory: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
-        storyRepository.deleteById(storyId);
-
     }
 
     @Transactional
-    public void updateStudent(int storyId, String name, String paragraph) {
-        Story story = storyRepository.findById(storyId).orElseThrow(()-> new IllegalStateException("Story with id" + storyId + " does not exist. "));
+    public void updateStory(int storyId, String name, String paragraph) {
+        try {
+            Story story = storyRepository.findById(storyId)
+                    .orElseThrow(() -> new IllegalStateException("Story with id " + storyId + " does not exist."));
 
-        if (name != null && name.length() > 0 && !Objects.equals(story.getName(), name)){
-            Optional<Story> storyOptional  = storyRepository.findStoryByName(name);
-            if (storyOptional.isPresent()){
-                throw new IllegalStateException("name Taken.");
+            if (name != null && name.length() > 0 && !Objects.equals(story.getName(), name)) {
+                Optional<Story> storyOptional = storyRepository.findStoryByName(name);
+                if (storyOptional.isPresent()) {
+                    throw new IllegalStateException("name Taken.");
+                }
+                story.setName(name);
+                story.setParagraph(paragraph);
             }
-            story.setName(name);
-            story.setParagraph(paragraph);
+        } catch (Exception e) {
+            System.err.println("Exception in update Story: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
     }
 
     public Story getByTutorialId(int tutorialId) {
-        Optional<Story> story = storyRepository.findByTutorialId(tutorialId);
-        return story.orElse(null);
-
+        try {
+            Optional<Story> story = storyRepository.findByTutorialId(tutorialId);
+            return story.orElse(null);
+        } catch (Exception e) {
+            System.err.println("Exception in getByTutorialId: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 }

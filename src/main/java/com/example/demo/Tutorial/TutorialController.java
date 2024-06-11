@@ -43,10 +43,23 @@ public class TutorialController {
     }
     @PutMapping("/{id}")
     public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") int tutorialId,
-                                                   @RequestParam(value = "title", required = false) String title,
-                                                   @RequestParam(value = "level", required = false) String level) {
-        tutorialService.updateTutorial(tutorialId, title, level);
-        return ResponseEntity.ok().build();
+                                                   @RequestParam("title") String title,
+                                                   @RequestParam("description") String description,
+                                                   @RequestParam("level") String level,
+                                                   @RequestParam("isPaid") boolean isPaid,
+                                                   @RequestParam("file") MultipartFile file) {
+        Tutorial updatedtutorial = tutorialService.updateTutorial(tutorialId, title, description, level, isPaid, file);
+        return new ResponseEntity<>(updatedtutorial, HttpStatus.OK);
     }
+    @GetMapping("/level/{level}")
+    public ResponseEntity<List<Tutorial>> getTutorialsByLevel(@PathVariable String level) {
+        List<Tutorial> tutorials = tutorialService.getTutorialsByLevel(level);
+        return ResponseEntity.ok(tutorials);
+    }
+    @GetMapping("/Learned/")
+    public List<Tutorial> getTutorialsByIsLearned(@RequestParam("isLearned") boolean isLearned) {
+        return tutorialService.getTutorialsByIsLearned(isLearned);
+    }
+
 }
 

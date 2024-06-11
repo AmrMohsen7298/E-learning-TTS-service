@@ -60,62 +60,77 @@ public class TTSService {
     }
 
 
-    public boolean saveStoryAudio(Story story) throws Exception {
-//        String fileName = String.valueOf(story.getTutorialId() ) + "-" + story.getId() + ".mp3";
-        String ssmlText = convertToSsml(story.getParagraph());
-        SynthesisInput inputText = SynthesisInput.newBuilder().setText(story.getParagraph()).setSsml(ssmlText).build();
-//        SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(inputText, voice, audioConfig);
-        SynthesizeSpeechRequest request = SynthesizeSpeechRequest.newBuilder().addEnableTimePointing(SynthesizeSpeechRequest.TimepointType.SSML_MARK).setAudioConfig(audioConfig).setInput(inputText).setVoice(voice).build();
-        SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(request);
-        ByteString audioContents = response.getAudioContent();
-
-        if (audioContents != null) {
-            story.setTranslation(translationService.translateText(story.getParagraph()));
-            Story addedStory = storyService.addNewStory(story);
-            paragraphAudioRepository.save(new ParagraphAudio(addedStory.getId(), audioContents, gson.toJson(response.getTimepointsList())));
-        } else {
-            return false;
-        }
-        boolean sentencesSaved = saveSentencesAudio(story);
-        if (!sentencesSaved) {
-            storyService.deleteStory(story.getId());
-            return false;
-        }
-        return true;
-
-    }
-
-    private boolean saveSentencesAudio(Story story) {
-        String[] sentences = story.getParagraph().split("\\.");
-        for (String s : sentences) {
-            SynthesisInput inputText = SynthesisInput.newBuilder().setText(s).build();
-            SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(inputText, voice, audioConfig);
+    public boolean saveStoryAudio(Story story) {
+        try {
+            String ssmlText = convertToSsml(story.getParagraph());
+            SynthesisInput inputText = SynthesisInput.newBuilder().setText(story.getParagraph()).setSsml(ssmlText).build();
+            SynthesizeSpeechRequest request = SynthesizeSpeechRequest.newBuilder().addEnableTimePointing(SynthesizeSpeechRequest.TimepointType.SSML_MARK).setAudioConfig(audioConfig).setInput(inputText).setVoice(voice).build();
+            SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(request);
             ByteString audioContents = response.getAudioContent();
+
             if (audioContents != null) {
-                sentenceAudioRepository.save(new SentencesAudio(story.getId(), audioContents));
-                if (!saveWordsAudio(story)) {
-                    storyService.deleteStory(story.getId());
-                    return false;
-                }
-                ;
+                story.setTranslation(translationService.translateText(story.getParagraph()));
+                Story addedStory = storyService.addNewStory(story);
+                paragraphAudioRepository.save(new ParagraphAudio(addedStory.getId(), audioContents, gson.toJson(response.getTimepointsList())));
             } else {
                 return false;
             }
+            boolean sentencesSaved = saveSentencesAudio(story);
+            if (!sentencesSaved) {
+                storyService.deleteStory(story.getId());
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            System.err.println("Exception in saveStoryAudio: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
-        return true;
+    }
+
+    private boolean saveSentencesAudio(Story story) {
+        try {
+            String[] sentences = story.getParagraph().split("\\.");
+            for (String s : sentences) {
+                SynthesisInput inputText = SynthesisInput.newBuilder().setText(s).build();
+                SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(inputText, voice, audioConfig);
+                ByteString audioContents = response.getAudioContent();
+                if (audioContents != null) {
+                    sentenceAudioRepository.save(new SentencesAudio(story.getId(), audioContents));
+                    if (!saveWordsAudio(story)) {
+                        storyService.deleteStory(story.getId());
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            System.err.println("Exception in saveSentencesAudio: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private boolean saveWordsAudio(Story story) {
-        String[] words = story.getParagraph().split("[.,;:\\s?!]+");
-        for (String s : words) {
-            KeyWord keyWord = new KeyWord();
-            keyWord.setTutorialId(story.getTutorialId());
-            keyWord.setText(s);
-            if (keyWordService.getByKeywordText(s, story.getTutorialId()) == null) {
-                keyWordService.createKeyword(keyWord);
+        try {
+            String[] words = story.getParagraph().split("[.,;:\\s?!]+");
+            for (String s : words) {
+                KeyWord keyWord = new KeyWord();
+                keyWord.setTutorialId(story.getTutorialId());
+                keyWord.setLevel("U");
+                keyWord.setText(s);
+                if (keyWordService.getByKeywordText(s, story.getTutorialId()) == null) {
+                    keyWordService.createKeyword(keyWord);
+                }
             }
+            return true;
+        } catch (Exception e) {
+            System.err.println("Exception in saveWordsAudio: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
-        return true;
     }
 
     public Resource loadFileAsResource(String path) throws FileNotFoundException {
@@ -129,25 +144,32 @@ public class TTSService {
             }
         } catch (MalformedURLException ex) {
             throw new FileNotFoundException("File not found ");
+        } catch (Exception e) {
+            System.err.println("Exception in loadFileAsResource: " + e.getMessage());
+            e.printStackTrace();
+            throw new FileNotFoundException("File not found ");
         }
     }
 
     public KeyWord saveWordAudio(KeyWord word) {
-        SynthesisInput inputText = SynthesisInput.newBuilder().setText(word.getText()).build();
-        SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(inputText, voice, audioConfig);
-        ByteString audioContents = response.getAudioContent();
-        if (audioContents != null) {
-            word.setAudio(audioContents.toByteArray());
-            return word;
+        try {
+            SynthesisInput inputText = SynthesisInput.newBuilder().setText(word.getText()).build();
+            SynthesizeSpeechResponse response = textToSpeechClient.synthesizeSpeech(inputText, voice, audioConfig);
+            ByteString audioContents = response.getAudioContent();
+            if (audioContents != null) {
+                word.setAudio(audioContents.toByteArray());
+                return word;
+            }
+            return null;
+        } catch (Exception e) {
+            System.err.println("Exception in saveWordAudio: " + e.getMessage());
+            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public void asyncRecognizeWords(ByteString gcsUri) throws Exception {
-        // Instantiates a client with GOOGLE_APPLICATION_CREDENTIALS
+    public void asyncRecognizeWords(ByteString gcsUri) {
         try (SpeechClient speech = SpeechClient.create()) {
-
-            // Configure remote file request for FLAC
             RecognitionConfig config =
                     RecognitionConfig.newBuilder()
                             .setEncoding(RecognitionConfig.AudioEncoding.MP3)
@@ -156,20 +178,14 @@ public class TTSService {
                             .setEnableWordTimeOffsets(true)
                             .build();
             RecognitionAudio audio = RecognitionAudio.newBuilder().setContent(gcsUri).build();
-
-            // Use non-blocking call for getting file transcription
             OperationFuture<LongRunningRecognizeResponse, LongRunningRecognizeMetadata> response =
                     speech.longRunningRecognizeAsync(config, audio);
             while (!response.isDone()) {
                 System.out.println("Waiting for response...");
                 Thread.sleep(10000);
             }
-
             List<SpeechRecognitionResult> results = response.get().getResultsList();
-
             for (SpeechRecognitionResult result : results) {
-                // There can be several alternative transcripts for a given chunk of speech. Just use the
-                // first (most likely) one here.
                 SpeechRecognitionAlternative alternative = result.getAlternativesList().get(0);
                 System.out.printf("Transcription: %s\n", alternative.getTranscript());
                 for (WordInfo wordInfo : alternative.getWordsList()) {
@@ -182,28 +198,37 @@ public class TTSService {
                             wordInfo.getEndTime().getNanos() / 100000000);
                 }
             }
+        } catch (Exception e) {
+            System.err.println("Exception in asyncRecognizeWords: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-    public String convertToSsml(String text) {
-        StringBuilder ssmlBuilder = new StringBuilder("<speak>");
-        String[] sentences = text.split("\\.\\s*"); // Split by sentence boundaries (". ")
-        for (int i = 0; i < sentences.length; i++) {
-            String sentence = sentences[i];
-            String[] words = sentence.trim().split("\\s+"); // Split by whitespace, removing leading/trailing spaces
-            int lastWordIndex = words.length - 1; // Index of the last word
 
-            for (int j = 0; j < words.length; j++) {
-                String word = words[j];
-                if (j == lastWordIndex) { // Check if it's the last word
-                    ssmlBuilder.append(word).append("<mark name='word_").append(i).append("_").append(j).append("'>").append("</mark>");
-                } else {
-                    ssmlBuilder.append(word).append(" "); // Add space for non-last words
+    public String convertToSsml(String text) {
+        try {
+            StringBuilder ssmlBuilder = new StringBuilder("<speak>");
+            String[] sentences = text.split("\\.\\s*");
+            for (int i = 0; i < sentences.length; i++) {
+                String sentence = sentences[i];
+                String[] words = sentence.trim().split("\\s+");
+                int lastWordIndex = words.length - 1;
+
+                for (int j = 0; j < words.length; j++) {
+                    String word = words[j];
+                    if (j == lastWordIndex) {
+                        ssmlBuilder.append(word).append("<mark name='word_").append(i).append("_").append(j).append("'>").append("</mark>");
+                    } else {
+                        ssmlBuilder.append(word).append(" ");
+                    }
                 }
+                ssmlBuilder.append(". ");
             }
-            ssmlBuilder.append(". "); // Add period and space after each sentence
+            ssmlBuilder.append("</speak>");
+            return ssmlBuilder.toString();
+        } catch (Exception e) {
+            System.err.println("Exception in convertToSsml: " + e.getMessage());
+            e.printStackTrace();
+            return "";
         }
-        ssmlBuilder.append("</speak>");
-        return ssmlBuilder.toString();
     }
 }
-

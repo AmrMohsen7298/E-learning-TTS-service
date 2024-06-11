@@ -1,7 +1,6 @@
 package com.example.demo.KeyWord;
 
 
-import com.google.api.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +60,21 @@ public class KeyWordController {
             return new ResponseEntity<>(keyword, HttpStatus.OK);
         }else{
             return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/getByLevel/{level}")
+    public ResponseEntity<List<KeyWord>> getKeyWordsByLevel(@PathVariable String level) {
+        List<KeyWord> keyWords = keywordService.getKeyWordsByLevel(level);
+        return ResponseEntity.ok(keyWords);
+    }
+    @GetMapping("/getByTutorial/{tutorialId}")
+    public ResponseEntity<List<KeyWord>> getByTutorialId(@PathVariable int tutorialId) {
+        List<KeyWord> keywords = keywordService.getByTutorialId(tutorialId);
+        if (keywords.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(keywords, HttpStatus.OK);
         }
     }
 }

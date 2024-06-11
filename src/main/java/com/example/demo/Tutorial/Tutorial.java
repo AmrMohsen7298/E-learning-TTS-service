@@ -1,4 +1,6 @@
 package com.example.demo.Tutorial;
+
+import com.example.demo.User.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,8 +10,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@Table
 @Entity
+@Table(name = "tutorials")
 public class Tutorial {
     @Id
     @SequenceGenerator(
@@ -17,7 +19,6 @@ public class Tutorial {
             sequenceName = "tutorial_sequence",
             allocationSize = 1
     )
-
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "tutorial_sequence"
@@ -28,6 +29,6 @@ public class Tutorial {
     private String level;
     private boolean isPaid;
     private byte[] image;
+    private boolean isLearned;
     
 }
-
