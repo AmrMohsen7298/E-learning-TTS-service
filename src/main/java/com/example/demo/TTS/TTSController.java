@@ -22,8 +22,8 @@ public class TTSController {
     SentenceAudioRepository sentenceAudioRepository;
     @Autowired
     TTSService ttsService;
-    @Autowired
-    WordAudioRepository wordAudioRepository;
+//    @Autowired
+//    WordAudioRepository wordAudioRepository;
 
     @GetMapping(path="/paragraph/{id}")
     public ResponseEntity<Resource> getParagraphAudioById(@PathVariable int id) {
@@ -70,9 +70,9 @@ public class TTSController {
     return null;
     }
 
-    @GetMapping("/words/{storyId}")
-    public WordAudio[] getWordAudioByStoryId(@PathVariable int storyId){
-        Optional<WordAudio[]> wordsAudio= wordAudioRepository.getByStoryId(storyId);
-        return wordsAudio.orElse(null);
-    }
+//    @GetMapping("/words/{storyId}")
+//    public WordAudio[] getWordAudioByStoryId(@PathVariable int storyId){
+//        Optional<WordAudio[]> wordsAudio= wordAudioRepository.getByStoryId(storyId);
+//        return wordsAudio.orElse(null);
+//    }
 }
