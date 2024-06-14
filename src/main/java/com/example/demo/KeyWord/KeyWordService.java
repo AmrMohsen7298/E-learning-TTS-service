@@ -48,7 +48,7 @@ public class KeyWordService {
             keyword = ttsService.saveWordAudio(keyword);
             if (keyword != null) {
                 if (!(keyword.getLevel().equalsIgnoreCase("E") || keyword.getLevel().equalsIgnoreCase("M") ||
-                        keyword.getLevel().equalsIgnoreCase("H")) || keyword.getLevel().equalsIgnoreCase("U")){
+                        keyword.getLevel().equalsIgnoreCase("H") || keyword.getLevel().equalsIgnoreCase("U"))){
                     throw new IllegalStateException("this level entry is not valid");
                 }
                 keyword.setTranslation(translationService.translateText(keyword.getText()));
@@ -118,9 +118,9 @@ public class KeyWordService {
     }
     public List<KeyWord> getByTutorialId(int tutorialId) {
         try {
-            Optional<KeyWord> optionalKeyword = keywordRepository.findByTutorialId(tutorialId);
-            if (optionalKeyword.isPresent()) {
-                return Collections.singletonList(optionalKeyword.get());
+            Optional<List<KeyWord>> optionalKeywordList = keywordRepository.findByTutorialIdAndKeyFlag(tutorialId, true);
+            if (optionalKeywordList.isPresent()) {
+                return optionalKeywordList.get();
             } else {
                 return Collections.emptyList();
             }
