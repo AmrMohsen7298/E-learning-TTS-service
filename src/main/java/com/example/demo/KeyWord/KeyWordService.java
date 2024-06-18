@@ -130,5 +130,20 @@ public class KeyWordService {
             return Collections.emptyList(); // Return an empty list in case of exception
         }
     }
+
+    public List<KeyWord> getForTutorial() {
+        try {
+            Optional<List<KeyWord>> optionalKeyWords = keywordRepository.findRandom();
+            if (optionalKeyWords.isPresent()) {
+                return optionalKeyWords.get();
+            } else {
+                return Collections.emptyList();
+            }
+        } catch (Exception e) {
+            System.err.println("Exception in getting Keywords: " + e.getMessage());
+            e.printStackTrace();
+            return Collections.emptyList(); // Return an empty list in case of exception
+        }
+    }
 }
 

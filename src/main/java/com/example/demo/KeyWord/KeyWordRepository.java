@@ -11,4 +11,6 @@ public interface KeyWordRepository extends JpaRepository<KeyWord, Integer> {
     Optional<KeyWord> getByTextAndTutorialId(String text, int tutorialId);
     Optional<KeyWord> findByLevel(String level);
     Optional<List<KeyWord>> findByTutorialIdAndKeyFlag(int tutorialId, boolean keyFlag);
+    @Query(value = "SELECT * from key_word where key_flag = true ORDER BY random() LIMIT 10", nativeQuery = true)
+    Optional<List<KeyWord>> findRandom();
 }

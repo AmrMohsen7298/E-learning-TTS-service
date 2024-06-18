@@ -77,4 +77,14 @@ public class KeyWordController {
             return new ResponseEntity<>(keywords, HttpStatus.OK);
         }
     }
+
+    @GetMapping("/getForTraining")
+    public ResponseEntity<List<KeyWord>> getForTraining(){
+        List<KeyWord> keyWords = keywordService.getForTutorial();
+        if (keyWords.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(keyWords, HttpStatus.OK);
+        }
+    }
 }
