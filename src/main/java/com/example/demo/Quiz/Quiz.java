@@ -28,6 +28,6 @@ public class Quiz {
 
     private String code;
     private int tutorialId;
-    @OneToMany(targetEntity = Question.class)
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Question.class)
     private List<Question> questions;
 }

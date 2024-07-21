@@ -47,12 +47,16 @@ public class QuizService {
 
     public void deleteQuiz(int quizId) {
         try {
-            Quiz quiz = quizRepository.findById(quizId)
-                    .orElseThrow(() -> new IllegalStateException("quiz with id " + quizId + " does not exist. "));
-            // Delete all questions associated with this quiz
-            questionRepository.deleteAll(quiz.getQuestions());
+            Optional<Quiz> quiz = quizRepository.findById(quizId);
+            if(quiz.isPresent()) {
+//                    .orElseThrow(() ->
+//                            new IllegalStateException("quiz with id " + quizId + " does not exist. "));
+                quizRepository.deleteById(quizId);
+                // Delete all questions associated with this quiz
+                questionRepository.deleteAll(quiz.get().getQuestions());
+            }
             // Delete the quiz itself
-            quizRepository.deleteById(quizId);
+
         } catch (Exception e) {
             System.err.println("Exception in deleteQuiz: " + e.getMessage());
             e.printStackTrace();
