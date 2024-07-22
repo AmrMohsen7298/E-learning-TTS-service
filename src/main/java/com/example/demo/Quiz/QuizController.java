@@ -32,11 +32,69 @@ public class QuizController {
     }
 
     @PutMapping(path = "{quizId}")
+
     public Quiz updateQuiz(@PathVariable("quizId") int quizId,
-                              @RequestParam(required = false) String code,
-                              @RequestParam(required = false) int tutorialId,
-                              @RequestParam(required = false) List<Question> questions){
-          return  quizService.updateQuiz( quizId,  code,  tutorialId, questions);
+
+                           @RequestBody QuizUpdateRequest request) {
+
+        return quizService.updateQuiz(quizId, request.getCode(), request.getTutorialId(), request.getQuestions());
+
+    }
+
+
+    public static class QuizUpdateRequest {
+
+        private String code;
+
+        private int tutorialId;
+
+        private List<Question> questions;
+        public QuizUpdateRequest() {} // no-arg constructor
+
+
+        public String getCode() {
+
+            return code;
+
+        }
+
+
+        public void setCode(String code) {
+
+            this.code = code;
+
+        }
+
+
+        public int getTutorialId() {
+
+            return tutorialId;
+
+        }
+
+
+        public void setTutorialId(int tutorialId) {
+
+            this.tutorialId = tutorialId;
+
+        }
+
+
+        public List<Question> getQuestions() {
+
+            return questions;
+
+        }
+
+
+        public void setQuestions(List<Question> questions) {
+
+            this.questions = questions;
+
+        }
+
+        // getters and setters
+
     }
     @GetMapping("/tutorial/{tutorialId}")
     public Quiz getByTutorialId(@PathVariable int tutorialId){
