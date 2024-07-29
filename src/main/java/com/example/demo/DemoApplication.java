@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin(
-		origins = {"https://tts.eliteacademyeg.com","https://ttsdash.eliteacademyeg.com","*"}
+		origins = {"https://tts.eliteacademyeg.com", "https://ttsdash.eliteacademyeg.com"}
 
 )
 
