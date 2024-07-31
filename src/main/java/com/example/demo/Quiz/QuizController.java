@@ -26,12 +26,12 @@ public class QuizController {
         quizService.addNewQuiz(quiz);
     }
 
-    @DeleteMapping(path = "{quizId}")
+    @PostMapping(path = "/delete/{quizId}")
     public void deleteQuiz(@PathVariable("quizId") int quizId){
         quizService.deleteQuiz(quizId);
     }
 
-    @PutMapping(path = "{quizId}")
+    @PostMapping(path = "/update/{quizId}")
 
     public Quiz updateQuiz(@PathVariable("quizId") int quizId,
 

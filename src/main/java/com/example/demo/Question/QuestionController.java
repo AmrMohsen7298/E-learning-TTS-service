@@ -32,12 +32,12 @@ public class QuestionController {
         questionService.addNewQuestion(quizId, code, text, choices, answer);
     }
 
-    @DeleteMapping(path = "{questionId}")
+    @PostMapping(path = "/delete/{questionId}")
     public void deleteStudent(@PathVariable("questionId") int questionId){
         questionService.deleteQuestion(questionId);
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<Question> updateQuestion(@PathVariable int id,
                                                    @RequestParam int quizId,
                                                    @RequestParam String code,

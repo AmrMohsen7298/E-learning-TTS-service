@@ -35,7 +35,7 @@ public class GrammarController {
         return new ResponseEntity<>(savedGrammar, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public ResponseEntity<Void> deleteGrammar(@PathVariable int id) {
         grammarService.deleteGrammar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

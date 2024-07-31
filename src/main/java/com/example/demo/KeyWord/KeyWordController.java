@@ -37,7 +37,7 @@ public class KeyWordController {
         return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<KeyWord> updateKeyword(@PathVariable int id, @RequestBody KeyWord keyword) {
         KeyWord updatedKeyword = keywordService.updateKeyword(id, keyword);
         if (updatedKeyword != null) {
@@ -47,7 +47,7 @@ public class KeyWordController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public ResponseEntity<Void> deleteKeyword(@PathVariable int id) {
         keywordService.deleteKeyword(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

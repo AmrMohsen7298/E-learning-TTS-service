@@ -43,12 +43,12 @@ public class StoryController {
 
     }
 
-    @DeleteMapping(path = "{storyId}")
+    @PostMapping(path = "/delete/{storyId}")
     public void deleteStory(@PathVariable("storyId") int storyId){
         storyService.deleteStory(storyId);
     }
 
-    @PutMapping(path = "{storyId}")
+    @PostMapping(path = "/update/{storyId}")
     public void updateStudent(@PathVariable("storyId") int storyId,
                               @RequestParam(required = false) String name,
                               @RequestParam(required = false) String paragraph){

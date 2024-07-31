@@ -36,12 +36,12 @@ public class TutorialController {
         return new ResponseEntity<>(savedTutorial, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete/{id}")
     public ResponseEntity<Void> deleteTutorial(@PathVariable int id) {
         tutorialService.deleteTutorial(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @PutMapping("/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<Tutorial> updateTutorial(@PathVariable("id") int tutorialId,
                                                    @RequestParam("title") String title,
                                                    @RequestParam("description") String description,
