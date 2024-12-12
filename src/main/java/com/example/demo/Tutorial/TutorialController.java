@@ -1,11 +1,15 @@
 package com.example.demo.Tutorial;
 
+import com.google.api.gax.paging.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.data.domain.PageRequest;
+
+import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.util.List;
 
@@ -16,8 +20,10 @@ public class TutorialController {
     private TutorialService tutorialService;
 
     @GetMapping
-    public List<Tutorial> getAllTutorials() {
-        return tutorialService.getAllTutorials();
+    public List<Tutorial> getAllTutorials(@RequestParam(defaultValue = "0") int page,
+
+                                          @RequestParam(defaultValue = "10") int size) {
+        return tutorialService.getAllTutorials(page,size);
     }
 
     @GetMapping("/{id}")

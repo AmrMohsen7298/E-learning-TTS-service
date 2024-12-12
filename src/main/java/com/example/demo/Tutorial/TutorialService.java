@@ -5,7 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
 
+import org.springframework.data.domain.PageRequest;
+
+import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,16 +19,34 @@ public class TutorialService {
     @Autowired
     private TutorialRepository tutorialRepository;
 
-    public List<Tutorial> getAllTutorials() {
-        try {
-            return tutorialRepository.findAll();
-        } catch (Exception e) {
-            System.err.println("Exception in getAllTutorials: " + e.getMessage());
-            e.printStackTrace();
-            return List.of();
-        }
-    }
+//    public List<Tutorial> getAllTutorials() {
+//        try {
+//            return tutorialRepository.findAll();
+//        } catch (Exception e) {
+//            System.err.println("Exception in getAllTutorials: " + e.getMessage());
+//            e.printStackTrace();
+//            return List.of();
+//        }
+//    }
+public List<Tutorial> getAllTutorials(int page,int size) {
+    try {
 
+        Pageable pageable = PageRequest.of(page, size);
+
+        return tutorialRepository.findAll(pageable).getContent();
+
+    } catch (Exception e) {
+
+        System.err.println("Exception in getAllTutorials: " + e.getMessage());
+
+        e.printStackTrace();
+
+        return List.of(); // Return an empty list in case of an error
+
+
+
+    }
+}
     public Tutorial getTutorialById(int id) {
         try {
             return tutorialRepository.findById(id).orElse(null);
