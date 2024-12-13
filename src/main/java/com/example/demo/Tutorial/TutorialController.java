@@ -69,8 +69,10 @@ public class TutorialController {
         return tutorialService.getTutorialsByIsLearned(isLearned);
     }
     @GetMapping("/free")
-    public List<Tutorial> getFreeTutorials(){
-        return  tutorialService.getFreeTutorials();
+    public List<Tutorial> getFreeTutorials(@RequestParam(defaultValue = "0") int page,
+
+                                           @RequestParam(defaultValue = "10") int size){
+        return  tutorialService.getFreeTutorials(page,size);
     }
 }
 

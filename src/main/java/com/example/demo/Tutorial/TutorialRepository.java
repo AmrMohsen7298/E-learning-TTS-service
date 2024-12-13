@@ -13,5 +13,5 @@ public interface TutorialRepository extends JpaRepository<Tutorial, Integer>  {
     List<Tutorial> findByLevel(String level, Pageable pageable);
     List<Tutorial> findByIsLearned(boolean isLearned);
 
-    List<Tutorial> findByIsPaid(boolean isPaid);
+    List<Tutorial> findByIsPaid(boolean isPaid,Pageable pageable);
 }

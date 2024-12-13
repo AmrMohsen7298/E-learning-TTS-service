@@ -28,11 +28,11 @@ public class TutorialService {
 //            return List.of();
 //        }
 //    }
-public List<Tutorial> getFreeTutorials() {
+public List<Tutorial> getFreeTutorials(int page,int size) {
 
     try {
-
-        return tutorialRepository.findByIsPaid(true); // Fetch tutorials where isPaid is true
+        Pageable pageable = PageRequest.of(page, size);
+        return tutorialRepository.findByIsPaid(true,pageable); // Fetch tutorials where isPaid is true
 
     } catch (Exception e) {
 
