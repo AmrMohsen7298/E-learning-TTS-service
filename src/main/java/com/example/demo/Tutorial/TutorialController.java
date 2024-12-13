@@ -68,6 +68,9 @@ public class TutorialController {
     public List<Tutorial> getTutorialsByIsLearned(@RequestParam("isLearned") boolean isLearned) {
         return tutorialService.getTutorialsByIsLearned(isLearned);
     }
-
+    @GetMapping("/free")
+    public List<Tutorial> getFreeTutorials(){
+        return  tutorialService.getFreeTutorials();
+    }
 }
 

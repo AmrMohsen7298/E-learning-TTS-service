@@ -28,6 +28,23 @@ public class TutorialService {
 //            return List.of();
 //        }
 //    }
+public List<Tutorial> getFreeTutorials() {
+
+    try {
+
+        return tutorialRepository.findByIsPaid(true); // Fetch tutorials where isPaid is true
+
+    } catch (Exception e) {
+
+        System.err.println("Exception in getAllPaidTutorials: " + e.getMessage());
+
+        e.printStackTrace();
+
+        return List.of(); // Return an empty list in case of an error
+
+    }
+
+}
 public List<Tutorial> getAllTutorials(int page,int size) {
     try {
 
@@ -119,6 +136,7 @@ public List<Tutorial> getAllTutorials(int page,int size) {
         }
         return null;
     }
+
     public List<Tutorial> getTutorialsByIsLearned(boolean isLearned) {
         return tutorialRepository.findByIsLearned(isLearned);
     }
