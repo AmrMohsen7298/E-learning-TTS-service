@@ -58,8 +58,10 @@ public class TutorialController {
         return new ResponseEntity<>(updatedtutorial, HttpStatus.OK);
     }
     @GetMapping("/level/{level}")
-    public ResponseEntity<List<Tutorial>> getTutorialsByLevel(@PathVariable String level) {
-        List<Tutorial> tutorials = tutorialService.getTutorialsByLevel(level);
+    public ResponseEntity<List<Tutorial>> getTutorialsByLevel(@PathVariable String level,@RequestParam(defaultValue = "0") int page,
+
+    @RequestParam(defaultValue = "10") int size) {
+        List<Tutorial> tutorials = tutorialService.getTutorialsByLevel(level,page,size);
         return ResponseEntity.ok(tutorials);
     }
     @GetMapping("/Learned/")

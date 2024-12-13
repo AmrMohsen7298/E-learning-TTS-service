@@ -107,9 +107,11 @@ public List<Tutorial> getAllTutorials(int page,int size) {
         return  null;
     }
 
-    public List<Tutorial> getTutorialsByLevel(String level) {
+    public List<Tutorial> getTutorialsByLevel(String level,int page , int size) {
         try {
-            return tutorialRepository.findByLevel(level);
+            Pageable pageable = PageRequest.of(page, size);
+
+            return tutorialRepository.findByLevel(level,pageable);
         }
         catch (Exception e) {
             System.err.println("Exception in getting Keywords: " + e.getMessage());
