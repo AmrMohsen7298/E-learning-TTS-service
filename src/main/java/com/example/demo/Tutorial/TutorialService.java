@@ -32,7 +32,7 @@ public List<Tutorial> getFreeTutorials(int page,int size) {
 
     try {
         Pageable pageable = PageRequest.of(page, size);
-        return tutorialRepository.findByIsPaid(true,pageable); // Fetch tutorials where isPaid is true
+        return tutorialRepository.findByIsPaid(false,pageable); // Fetch tutorials where isPaid is true
 
     } catch (Exception e) {
 
