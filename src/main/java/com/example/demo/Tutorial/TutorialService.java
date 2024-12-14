@@ -28,6 +28,23 @@ public class TutorialService {
 //            return List.of();
 //        }
 //    }
+public int getAllTutorialsSize() {
+
+    try {
+
+        return tutorialRepository.findAll().size(); // Return the size of the list
+
+    } catch (Exception e) {
+
+        System.err.println("Exception in getAllTutorialsSize: " + e.getMessage());
+
+        e.printStackTrace();
+
+        return 0; // Return 0 in case of an error
+
+    }
+
+}
 public List<Tutorial> getFreeTutorials(int page,int size) {
 
     try {

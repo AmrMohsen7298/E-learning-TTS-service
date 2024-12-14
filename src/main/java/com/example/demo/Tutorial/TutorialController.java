@@ -18,7 +18,10 @@ import java.util.List;
 public class TutorialController {
     @Autowired
     private TutorialService tutorialService;
-
+@GetMapping("/Size")
+public int getAllTutorialsSize() {
+    return tutorialService.getAllTutorialsSize();
+}
     @GetMapping
     public List<Tutorial> getAllTutorials(@RequestParam(defaultValue = "0") int page,
 
